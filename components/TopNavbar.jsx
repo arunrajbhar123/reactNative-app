@@ -5,10 +5,15 @@ import Tvshow from "./TopNavigator/Tvshow";
 const SecondTab = createMaterialTopTabNavigator();
 export const TopNabar = () => {
   return (
-    <SecondTab.Navigator>
-      <SecondTab.Screen name="Films" component={Films} />
+    <SecondTab.Navigator
+      screenOptions={{
+        tabBarStyle: { backgroundColor: "#111", color: "#fff" },
+        tabBarActiveTintColor: "#fff",
+      }}
+    >
       <SecondTab.Screen name="For you" component={Foryou} />
-      <SecondTab.Screen name="Tv Show" component={Tvshow} />
+      <SecondTab.Screen name="Films" component={Films} />
+      <SecondTab.Screen name="Tv Shows" component={Tvshow} />
     </SecondTab.Navigator>
   );
 };

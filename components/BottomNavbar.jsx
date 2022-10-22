@@ -7,12 +7,26 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { TopNabar } from "./TopNavbar";
-
+import { Text, View, StatusBar } from "react-native";
 const Tab = createMaterialBottomTabNavigator();
 
 export function ButtomNavbar() {
   return (
     <NavigationContainer>
+      <StatusBar barStyle="light-content" backgroundColor="#111" />
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          padding: 25,
+          backgroundColor: "#111",
+          width: "100%",
+        }}
+      >
+        <Text style={{ color: "#fff" }}>arun</Text>
+        <Text style={{ color: "#fff" }}>arun</Text>
+        <Text style={{ color: "#fff" }}>arun</Text>
+      </View>
       <Tab.Navigator
         initialRouteName="Home"
         activeColor="#fff"
