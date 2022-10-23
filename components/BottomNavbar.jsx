@@ -23,9 +23,10 @@ export function ButtomNavbar() {
           width: "100%",
         }}
       >
-        <Text style={{ color: "#fff" }}>arun</Text>
-        <Text style={{ color: "#fff" }}>arun</Text>
-        <Text style={{ color: "#fff" }}>arun</Text>
+        <MaterialCommunityIcons name="home" color={"#fff"} size={26} />
+
+        <Text style={{ color: "#fff", fontSize: 19 }}>Google TV</Text>
+        <MaterialCommunityIcons name="account" color={"#fff"} size={26} />
       </View>
       <Tab.Navigator
         initialRouteName="Home"
