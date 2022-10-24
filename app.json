@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "app",
-    "slug": "app",
+    "name": "Google TV",
+    "slug": "GoogleTV",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

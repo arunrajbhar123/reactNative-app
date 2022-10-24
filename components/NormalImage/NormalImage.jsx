@@ -9,7 +9,7 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 const EXCTRA_IMG__LINK = "https://image.tmdb.org/t/p/w500";
-const HeroSlider = (props) => {
+const NormalImage = (props) => {
   const make = EXCTRA_IMG__LINK + props.backdrop_path;
   const image = { uri: make };
 
@@ -35,18 +35,18 @@ const HeroSlider = (props) => {
     </View>
   );
 };
-export default HeroSlider;
+export default NormalImage;
 
 const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
-    padding: 10,
+    padding: 5,
+    paddingTop: 15,
+    paddingBottom: 15,
   },
   image: {
-    padding: 10,
-    height: 200,
-    width: 360,
-    margin: 5,
+    height: 90,
+    width: 160,
   },
   text: {
     color: "#fff",

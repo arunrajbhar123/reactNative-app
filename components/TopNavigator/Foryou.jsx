@@ -9,14 +9,23 @@ import {
   Image,
   ScrollView,
   StatusBar,
+  Button,
+  TouchableWithoutFeedback,
 } from "react-native";
 import HeroSlider from "./../ImageSliders/HeroSlider";
 import Axios from "axios";
 import React, { useEffect, useState } from "react";
-const Foryou = () => {
+import NormalImage from "./../NormalImage/NormalImage";
+import Icon from "react-native-vector-icons/AntDesign";
+import SpecialImage from "./../SpecialImage/SpecialImage";
+import { LinearGradient } from "expo-linear-gradient";
+const Foryou = ({ navigation }) => {
   const [isLoading, setLoading] = useState(false);
   const [data, setData] = useState([]);
-
+  const [tvShow, setTvShow] = useState([]);
+  const [upComing, setUpComing] = useState([]);
+  const [top, setTop] = useState([]);
+  // const navIcon = Icon('md-arrow-back', 24, 'white');
   useEffect(() => {
     fetch(
       "https://api.themoviedb.org/3/movie/popular?api_key=763aad1b51ae4ed320afd3680c31c2fe&language=en-US&page=1"
@@ -27,16 +36,47 @@ const Foryou = () => {
       })
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
+
+    fetch(
+      "https://api.themoviedb.org/3/tv/popular?api_key=763aad1b51ae4ed320afd3680c31c2fe&language=en-US&page=1"
+    )
+      .then((response) => response.json())
+      .then((json) => {
+        setTvShow(json.results);
+      })
+      .catch((error) => console.error(error));
+
+    fetch(
+      "https://api.themoviedb.org/3/movie/upcoming?api_key=763aad1b51ae4ed320afd3680c31c2fe&language=en-US&page=1"
+    )
+      .then((response) => response.json())
+      .then((json) => {
+        setUpComing(json.results);
+      })
+      .catch((error) => console.error(error));
+
+    //
+
+    fetch(
+      "https://api.themoviedb.org/3/movie/top_rated?api_key=763aad1b51ae4ed320afd3680c31c2fe&language=en-US&page=1"
+    )
+      .then((response) => response.json())
+      .then((json) => {
+        setTop(json.results);
+      })
+      .catch((error) => console.error(error));
   }, []);
 
-  const renderItem = ({ item }) => <HeroSlider {...item} />;
+  const renderItem = ({ item }) => (
+    <HeroSlider {...item} navigation={navigation} />
+  );
+  console.log(tvShow);
   return (
-    <View>
+    <ScrollView style={{ backgroundColor: "#111" }}>
       {isLoading ? (
         <ActivityIndicator />
       ) : (
         <FlatList
-          // horizontal={true}
           // data={[
           //   {
           //     adult: false,
@@ -175,23 +215,589 @@ const Foryou = () => {
           //     vote_count: 824,
           //   },
           // ]}
-          // data={data}
-          // keyExtractor={({ id }, index) => id}
-          // renderItem={({ item }) => <HeroSlider {...item} />}
-          // data={data}
-          // renderItem={({ item }) => <HeroSlider {...item} />}
-          // keyExtractor={(item) => item.key}
-          // getItemCount={getItemCount}
-          // getItem={getItem}
           showsHorizontalScrollIndicator={false}
           horizontal={true}
           data={data}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
-          
         />
       )}
-    </View>
+      <TouchableWithoutFeedback
+        onPress={() => navigation.navigate("Preview", { data: "props" })}
+      >
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            paddingLeft: 20,
+            paddingRight: 20,
+            paddingTop: 10,
+          }}
+        >
+          <View>
+            <Text style={styles.text}>Top picks for you</Text>
+          </View>
+          <View>
+            <Icon name="right" color={"#fff"} size={20} />
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+      <FlatList
+        showsHorizontalScrollIndicator={false}
+        horizontal={true}
+        data={tvShow}
+        renderItem={({ item }) => (
+          <NormalImage {...item} navigation={navigation} />
+        )}
+        keyExtractor={(item) => item.id}
+      />
+
+      <TouchableWithoutFeedback
+        onPress={() => navigation.navigate("Preview", { data: "props" })}
+      >
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            paddingLeft: 20,
+            paddingRight: 20,
+            paddingTop: 10,
+          }}
+        >
+          <View>
+            <Text style={styles.text}>Popular films and shows</Text>
+          </View>
+          <View>
+            <Icon name="right" color={"#fff"} size={20} />
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+      <FlatList
+        showsHorizontalScrollIndicator={false}
+        horizontal={true}
+        data={upComing}
+        renderItem={({ item }) => (
+          <NormalImage {...item} navigation={navigation} />
+        )}
+        keyExtractor={(item) => item.id}
+      />
+
+      <LinearGradient colors={["red", "transparent"]}>
+        <View>
+          <TouchableWithoutFeedback
+            onPress={() => navigation.navigate("Preview", { data: "props" })}
+          >
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                paddingLeft: 20,
+                paddingRight: 20,
+                paddingTop: 10,
+              }}
+            >
+              <View>
+                <Text style={{ fontSize: 25, color: "#fff" }}>
+                  Lights, Diwali, Action!
+                </Text>
+                <Text style={{ fontSize: 17, color: "grey", width: 340 }}>
+                  This festive season light up your screens with these
+                  blockbusters
+                </Text>
+              </View>
+              <View>
+                <Icon name="right" color={"#fff"} size={20} />
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+          <FlatList
+            showsHorizontalScrollIndicator={false}
+            horizontal={true}
+            data={data}
+            renderItem={({ item }) => (
+              <SpecialImage {...item} navigation={navigation} />
+            )}
+            keyExtractor={(item) => item.id}
+          />
+        </View>
+      </LinearGradient>
+
+      <TouchableWithoutFeedback
+        onPress={() => navigation.navigate("Preview", { data: "props" })}
+      >
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            paddingLeft: 20,
+            paddingRight: 20,
+            paddingTop: 10,
+          }}
+        >
+          <View>
+            <Text style={styles.text}>Dramas</Text>
+          </View>
+          <View>
+            <Icon name="right" color={"#fff"} size={20} />
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+      <FlatList
+        showsHorizontalScrollIndicator={false}
+        horizontal={true}
+        data={top}
+        renderItem={({ item }) => (
+          <NormalImage {...item} navigation={navigation} />
+        )}
+        keyExtractor={(item) => item.id}
+      />
+
+      <TouchableWithoutFeedback
+        onPress={() => navigation.navigate("Preview", { data: "props" })}
+      >
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            paddingLeft: 20,
+            paddingRight: 20,
+            paddingTop: 10,
+          }}
+        >
+          <View>
+            <Text style={styles.text}>If you like criminal justice</Text>
+          </View>
+          <View>
+            <Icon name="right" color={"#fff"} size={20} />
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+      <FlatList
+        showsHorizontalScrollIndicator={false}
+        horizontal={true}
+        data={data}
+        renderItem={({ item }) => (
+          <NormalImage {...item} navigation={navigation} />
+        )}
+        keyExtractor={(item) => item.id}
+      />
+
+      <TouchableWithoutFeedback
+        onPress={() => navigation.navigate("Preview", { data: "props" })}
+      >
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            paddingLeft: 20,
+            paddingRight: 20,
+            paddingTop: 10,
+          }}
+        >
+          <View>
+            <Text style={styles.text}>Fantasy films</Text>
+          </View>
+          <View>
+            <Icon name="right" color={"#fff"} size={20} />
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+      <FlatList
+        showsHorizontalScrollIndicator={false}
+        horizontal={true}
+        data={data}
+        renderItem={({ item }) => (
+          <NormalImage {...item} navigation={navigation} />
+        )}
+        keyExtractor={(item) => item.id}
+      />
+
+      <TouchableWithoutFeedback
+        onPress={() => navigation.navigate("Preview", { data: "props" })}
+      >
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            paddingLeft: 20,
+            paddingRight: 20,
+            paddingTop: 10,
+          }}
+        >
+          <View>
+            <Text style={styles.text}>Trending</Text>
+          </View>
+          <View>
+            <Icon name="right" color={"#fff"} size={20} />
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+      <FlatList
+        showsHorizontalScrollIndicator={false}
+        horizontal={true}
+        data={data}
+        renderItem={({ item }) => (
+          <NormalImage {...item} navigation={navigation} />
+        )}
+        keyExtractor={(item) => item.id}
+      />
+
+      <TouchableWithoutFeedback
+        onPress={() => navigation.navigate("Preview", { data: "props" })}
+      >
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            paddingLeft: 20,
+            paddingRight: 20,
+            paddingTop: 10,
+          }}
+        >
+          <View>
+            <Text style={styles.text}>Comic capers</Text>
+          </View>
+          <View>
+            <Icon name="right" color={"#fff"} size={20} />
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+      <FlatList
+        showsHorizontalScrollIndicator={false}
+        horizontal={true}
+        data={data}
+        renderItem={({ item }) => (
+          <NormalImage {...item} navigation={navigation} />
+        )}
+        keyExtractor={(item) => item.id}
+      />
+
+      <TouchableWithoutFeedback
+        onPress={() => navigation.navigate("Preview", { data: "props" })}
+      >
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            paddingLeft: 20,
+            paddingRight: 20,
+            paddingTop: 10,
+          }}
+        >
+          <View>
+            <Text style={styles.text}>Action films</Text>
+          </View>
+          <View>
+            <Icon name="right" color={"#fff"} size={20} />
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+      <FlatList
+        showsHorizontalScrollIndicator={false}
+        horizontal={true}
+        data={data}
+        renderItem={({ item }) => (
+          <NormalImage {...item} navigation={navigation} />
+        )}
+        keyExtractor={(item) => item.id}
+      />
+
+      <TouchableWithoutFeedback
+        onPress={() => navigation.navigate("Preview", { data: "props" })}
+      >
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            paddingLeft: 20,
+            paddingRight: 20,
+            paddingTop: 10,
+          }}
+        >
+          <View>
+            <Text style={styles.text}>Sparking siblings</Text>
+          </View>
+          <View>
+            <Icon name="right" color={"#fff"} size={20} />
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+      <FlatList
+        showsHorizontalScrollIndicator={false}
+        horizontal={true}
+        data={data}
+        renderItem={({ item }) => (
+          <NormalImage {...item} navigation={navigation} />
+        )}
+        keyExtractor={(item) => item.id}
+      />
+
+      <TouchableWithoutFeedback
+        onPress={() => navigation.navigate("Preview", { data: "props" })}
+      >
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            paddingLeft: 20,
+            paddingRight: 20,
+            paddingTop: 10,
+          }}
+        >
+          <View>
+            <Text style={styles.text}>If you like MTV Hustle</Text>
+          </View>
+          <View>
+            <Icon name="right" color={"#fff"} size={20} />
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+      <FlatList
+        showsHorizontalScrollIndicator={false}
+        horizontal={true}
+        data={data}
+        renderItem={({ item }) => (
+          <NormalImage {...item} navigation={navigation} />
+        )}
+        keyExtractor={(item) => item.id}
+      />
+
+      <TouchableWithoutFeedback
+        onPress={() => navigation.navigate("Preview", { data: "props" })}
+      >
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            paddingLeft: 20,
+            paddingRight: 20,
+            paddingTop: 10,
+          }}
+        >
+          <View>
+            <Text style={styles.text}>Watch Before TV</Text>
+          </View>
+          <View>
+            <Icon name="right" color={"#fff"} size={20} />
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+      <FlatList
+        showsHorizontalScrollIndicator={false}
+        horizontal={true}
+        data={data}
+        renderItem={({ item }) => (
+          <NormalImage {...item} navigation={navigation} />
+        )}
+        keyExtractor={(item) => item.id}
+      />
+
+      <TouchableWithoutFeedback
+        onPress={() => navigation.navigate("Preview", { data: "props" })}
+      >
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            paddingLeft: 20,
+            paddingRight: 20,
+            paddingTop: 10,
+          }}
+        >
+          <View>
+            <Text style={styles.text}>Crime Shows</Text>
+          </View>
+          <View>
+            <Icon name="right" color={"#fff"} size={20} />
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+      <FlatList
+        showsHorizontalScrollIndicator={false}
+        horizontal={true}
+        data={data}
+        renderItem={({ item }) => (
+          <NormalImage {...item} navigation={navigation} />
+        )}
+        keyExtractor={(item) => item.id}
+      />
+
+      <TouchableWithoutFeedback
+        onPress={() => navigation.navigate("Preview", { data: "props" })}
+      >
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            paddingLeft: 20,
+            paddingRight: 20,
+            paddingTop: 10,
+          }}
+        >
+          <View>
+            <Text style={styles.text}>Adventure films</Text>
+          </View>
+          <View>
+            <Icon name="right" color={"#fff"} size={20} />
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+      <FlatList
+        showsHorizontalScrollIndicator={false}
+        horizontal={true}
+        data={data}
+        renderItem={({ item }) => (
+          <NormalImage {...item} navigation={navigation} />
+        )}
+        keyExtractor={(item) => item.id}
+      />
+
+      <TouchableWithoutFeedback
+        onPress={() => navigation.navigate("Preview", { data: "props" })}
+      >
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            paddingLeft: 20,
+            paddingRight: 20,
+            paddingTop: 10,
+          }}
+        >
+          <View>
+            <Text style={styles.text}>Magic films</Text>
+          </View>
+          <View>
+            <Icon name="right" color={"#fff"} size={20} />
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+      <FlatList
+        showsHorizontalScrollIndicator={false}
+        horizontal={true}
+        data={data}
+        renderItem={({ item }) => (
+          <NormalImage {...item} navigation={navigation} />
+        )}
+        keyExtractor={(item) => item.id}
+      />
+
+      <TouchableWithoutFeedback
+        onPress={() => navigation.navigate("Preview", { data: "props" })}
+      >
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            paddingLeft: 20,
+            paddingRight: 20,
+            paddingTop: 10,
+          }}
+        >
+          <View>
+            <Text style={styles.text}>Bollywood films</Text>
+          </View>
+          <View>
+            <Icon name="right" color={"#fff"} size={20} />
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+      <FlatList
+        showsHorizontalScrollIndicator={false}
+        horizontal={true}
+        data={data}
+        renderItem={({ item }) => (
+          <NormalImage {...item} navigation={navigation} />
+        )}
+        keyExtractor={(item) => item.id}
+      />
+
+      <TouchableWithoutFeedback
+        onPress={() => navigation.navigate("Preview", { data: "props" })}
+      >
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            paddingLeft: 20,
+            paddingRight: 20,
+            paddingTop: 10,
+          }}
+        >
+          <View>
+            <Text style={styles.text}>Popular films and shows</Text>
+          </View>
+          <View>
+            <Icon name="right" color={"#fff"} size={20} />
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+      <FlatList
+        showsHorizontalScrollIndicator={false}
+        horizontal={true}
+        data={data}
+        renderItem={({ item }) => (
+          <NormalImage {...item} navigation={navigation} />
+        )}
+        keyExtractor={(item) => item.id}
+      />
+
+      <LinearGradient colors={["blue", "transparent"]}>
+        <View>
+          <TouchableWithoutFeedback
+            onPress={() => navigation.navigate("Preview", { data: "props" })}
+          >
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                paddingLeft: 20,
+                paddingRight: 20,
+                paddingTop: 10,
+              }}
+            >
+              <View>
+                <Text style={styles.text}>Lights, Diwali, Action!</Text>
+                <Text style={{ fontSize: 17, color: "grey", width: 340 }}>
+                  This festive season light up your screens with these
+                  blockbusters
+                </Text>
+              </View>
+              <View>
+                <Icon name="right" color={"#fff"} size={20} />
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+          <FlatList
+            showsHorizontalScrollIndicator={false}
+            horizontal={true}
+            data={data}
+            renderItem={({ item }) => (
+              <SpecialImage {...item} navigation={navigation} />
+            )}
+            keyExtractor={(item) => item.id}
+          />
+        </View>
+      </LinearGradient>
+    </ScrollView>
   );
 };
 
@@ -199,6 +805,7 @@ export default Foryou;
 
 const styles = StyleSheet.create({
   text: {
-    fontSize: 42,
+    fontSize: 18,
+    color: "#fff",
   },
 });

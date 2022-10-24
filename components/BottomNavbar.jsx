@@ -7,31 +7,60 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { TopNabar } from "./TopNavbar";
-import { Text, View, StatusBar } from "react-native";
-const Tab = createMaterialBottomTabNavigator();
+import Icon from "react-native-vector-icons/FontAwesome";
+import Entypo from "react-native-vector-icons/Entypo";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import Feather from "react-native-vector-icons/Feather";
+import {
+  Text,
+  View,
+  StatusBar,
+  TouchableWithoutFeedback,
+  ScrollView,
+} from "react-native";
+import Preview from "./../pages/Preview";
 
-export function ButtomNavbar() {
+const Tab = createMaterialBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+
+export function ButtomNavbar({ navigation }) {
   return (
-    <NavigationContainer>
-      <StatusBar barStyle="light-content" backgroundColor="#111" />
+    <>
+      <StatusBar barStyle="light-content" backgroundColor="#323131" />
+
       <View
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
           padding: 25,
-          backgroundColor: "#111",
+          paddingTop: 15,
+          paddingBottom: 15,
+          backgroundColor: "#323131",
           width: "100%",
         }}
       >
-        <MaterialCommunityIcons name="home" color={"#fff"} size={26} />
-
+        <TouchableWithoutFeedback onPress={() => navigation.navigate("Search")}>
+          <Icon name="search" color={"#fff"} size={19} />
+        </TouchableWithoutFeedback>
         <Text style={{ color: "#fff", fontSize: 19 }}>Google TV</Text>
-        <MaterialCommunityIcons name="account" color={"#fff"} size={26} />
+
+        <TouchableWithoutFeedback
+          onPress={() => navigation.navigate("Profile")}
+        >
+          <MaterialCommunityIcons
+            name="account"
+            color={"#fff"}
+            size={26}
+            style={{ backgroundColor: "red", borderRadius: 12, padding: 1.8 }}
+          />
+        </TouchableWithoutFeedback>
       </View>
+
+      {/* Stack.Group */}
       <Tab.Navigator
         initialRouteName="Home"
         activeColor="#fff"
-        barStyle={{ backgroundColor: "black" }}
+        barStyle={{ backgroundColor: "#323131" }}
       >
         <Tab.Screen
           name="Home"
@@ -39,7 +68,7 @@ export function ButtomNavbar() {
           options={{
             tabBarLabel: "Home",
             tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="home" color={color} size={26} />
+              <Icon name="home" color={color} size={26} />
             ),
           }}
         />
@@ -49,7 +78,7 @@ export function ButtomNavbar() {
           options={{
             tabBarLabel: "Shop",
             tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="home" color={color} size={26} />
+              <Entypo name="shop" color={color} size={26} />
             ),
           }}
         />
@@ -59,7 +88,7 @@ export function ButtomNavbar() {
           options={{
             tabBarLabel: "Library",
             tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="library" color={color} size={26} />
+              <MaterialIcons name="video-library" color={color} size={26} />
             ),
           }}
         />
@@ -70,11 +99,11 @@ export function ButtomNavbar() {
           options={{
             tabBarLabel: "Watchlist",
             tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="home" color={color} size={26} />
+              <Feather name="bookmark" color={color} size={26} />
             ),
           }}
         />
       </Tab.Navigator>
-    </NavigationContainer>
+    </>
   );
 }

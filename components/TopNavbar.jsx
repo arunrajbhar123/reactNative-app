@@ -7,7 +7,12 @@ export const TopNabar = () => {
   return (
     <SecondTab.Navigator
       screenOptions={{
-        tabBarStyle: { backgroundColor: "#111", color: "#fff" },
+        tabBarStyle: {
+          backgroundColor: "#323131",
+          color: "#fff",
+        },
+
+        swipeEnabled: false,
         tabBarActiveTintColor: "#fff",
       }}
     >

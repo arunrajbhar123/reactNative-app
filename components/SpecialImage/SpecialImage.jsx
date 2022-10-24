@@ -9,10 +9,10 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 const EXCTRA_IMG__LINK = "https://image.tmdb.org/t/p/w500";
-const HeroSlider = (props) => {
-  const make = EXCTRA_IMG__LINK + props.backdrop_path;
+const SpecialImage = (props) => {
+  const make = EXCTRA_IMG__LINK + props.poster_path;
   const image = { uri: make };
-
+ 
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback
@@ -25,36 +25,29 @@ const HeroSlider = (props) => {
           imageStyle={{
             borderRadius: 20,
           }}
-        >
-          <Text style={styles.text}>{props.title}</Text>
-          <Text style={styles.overview} numberOfLines={1}>
-            {props.overview}
-          </Text>
-        </ImageBackground>
+        ></ImageBackground>
       </TouchableWithoutFeedback>
     </View>
   );
 };
-export default HeroSlider;
+export default SpecialImage;
 
 const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
-    padding: 10,
+    padding: 5,
+    paddingTop: 15,
+    paddingBottom: 15,
   },
   image: {
-    padding: 10,
-    height: 200,
-    width: 360,
-    margin: 5,
+    height: 80,
+    width: 160,
   },
   text: {
     color: "#fff",
-    fontSize: 22,
+    fontSize: 17,
     fontWeight: "bold",
     textAlign: "left",
-    top: 100,
-    left: 9,
   },
   overview: {
     top: 105,
