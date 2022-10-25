@@ -17,6 +17,7 @@ import {
   StatusBar,
   TouchableWithoutFeedback,
   ScrollView,
+  FlatList,
 } from "react-native";
 import Preview from "./../pages/Preview";
 
@@ -28,33 +29,36 @@ export function ButtomNavbar({ navigation }) {
     <>
       <StatusBar barStyle="light-content" backgroundColor="#323131" />
 
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          padding: 25,
-          paddingTop: 15,
-          paddingBottom: 15,
-          backgroundColor: "#323131",
-          width: "100%",
-        }}
-      >
-        <TouchableWithoutFeedback onPress={() => navigation.navigate("Search")}>
-          <Icon name="search" color={"#fff"} size={19} />
-        </TouchableWithoutFeedback>
-        <Text style={{ color: "#fff", fontSize: 19 }}>Google TV</Text>
-
-        <TouchableWithoutFeedback
-          onPress={() => navigation.navigate("Profile")}
+      <>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            padding: 25,
+            paddingTop: 15,
+            paddingBottom: 15,
+            backgroundColor: "#323131",
+          }}
         >
-          <MaterialCommunityIcons
-            name="account"
-            color={"#fff"}
-            size={26}
-            style={{ backgroundColor: "red", borderRadius: 12, padding: 1.8 }}
-          />
-        </TouchableWithoutFeedback>
-      </View>
+          <TouchableWithoutFeedback
+            onPress={() => navigation.navigate("Search")}
+          >
+            <Icon name="search" color={"#fff"} size={19} />
+          </TouchableWithoutFeedback>
+          <Text style={{ color: "#fff", fontSize: 19 }}>Google TV</Text>
+
+          <TouchableWithoutFeedback
+            onPress={() => navigation.navigate("Profile")}
+          >
+            <MaterialCommunityIcons
+              name="account"
+              color={"#fff"}
+              size={26}
+              style={{ backgroundColor: "red", borderRadius: 12, padding: 1.8 }}
+            />
+          </TouchableWithoutFeedback>
+        </View>
+      </>
 
       {/* Stack.Group */}
       <Tab.Navigator

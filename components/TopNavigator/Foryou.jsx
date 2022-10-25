@@ -19,784 +19,124 @@ import NormalImage from "./../NormalImage/NormalImage";
 import Icon from "react-native-vector-icons/AntDesign";
 import SpecialImage from "./../SpecialImage/SpecialImage";
 import { LinearGradient } from "expo-linear-gradient";
+import Constants from "expo-constants";
 const Foryou = ({ navigation }) => {
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [tvShow, setTvShow] = useState([]);
   const [upComing, setUpComing] = useState([]);
   const [top, setTop] = useState([]);
-  // const navIcon = Icon('md-arrow-back', 24, 'white');
+
+  const dataFetch = [
+    { setItems: "setData", type: "movie/popular" },
+    { setItems: "setTvShow", type: "tv/popular" },
+    { setItems: "setUpComing", type: "movie/upcoming" },
+    { setItems: "setTop", type: "movie/top_rated" },
+  ];
+  const api_key = "763aad1b51ae4ed320afd3680c31c2fe";
+  const fda = [
+    {
+      adult: false,
+      backdrop_path: "/qxeqKcVBWnQxUp1w6fwWcxZEA6m.jpg",
+      genre_ids: [28, 12, 14],
+      id: 436270,
+      original_language: "en",
+      original_title: "Black Adam",
+      overview:
+        "Nearly 5,000 years after he was bestowed with the almighty powers of the Egyptian gods—and imprisoned just as quickly—Black Adam is freed from his earthly tomb, ready to unleash his unique form of justice on the modern world.",
+      popularity: 6041.545,
+      poster_path: "/3zXceNTtyj5FLjwQXuPvLYK5YYL.jpg",
+      release_date: "2022-10-19",
+      title: "Black Adam",
+      video: false,
+      vote_average: 7.2,
+      vote_count: 425,
+    },
+    {
+      adult: false,
+      backdrop_path: "/qxeqKcVBWnQxUp1w6fwWcxZEA6m.jpg",
+      genre_ids: [28, 12, 14],
+      id: 436270,
+      original_language: "en",
+      original_title: "Black Adam",
+      overview:
+        "Nearly 5,000 years after he was bestowed with the almighty powers of the Egyptian gods—and imprisoned just as quickly—Black Adam is freed from his earthly tomb, ready to unleash his unique form of justice on the modern world.",
+      popularity: 6041.545,
+      poster_path: "/3zXceNTtyj5FLjwQXuPvLYK5YYL.jpg",
+      release_date: "2022-10-19",
+      title: "Black Adam",
+      video: false,
+      vote_average: 7.2,
+      vote_count: 425,
+    },
+    {
+      adult: false,
+      backdrop_path: "/qxeqKcVBWnQxUp1w6fwWcxZEA6m.jpg",
+      genre_ids: [28, 12, 14],
+      id: 436270,
+      original_language: "en",
+      original_title: "Black Adam",
+      overview:
+        "Nearly 5,000 years after he was bestowed with the almighty powers of the Egyptian gods—and imprisoned just as quickly—Black Adam is freed from his earthly tomb, ready to unleash his unique form of justice on the modern world.",
+      popularity: 6041.545,
+      poster_path: "/3zXceNTtyj5FLjwQXuPvLYK5YYL.jpg",
+      release_date: "2022-10-19",
+      title: "Black Adam",
+      video: false,
+      vote_average: 7.2,
+      vote_count: 425,
+    },
+  ];
   useEffect(() => {
-    fetch(
-      "https://api.themoviedb.org/3/movie/popular?api_key=763aad1b51ae4ed320afd3680c31c2fe&language=en-US&page=1"
-    )
-      .then((response) => response.json())
-      .then((json) => {
-        setData(json.results);
-      })
-      .catch((error) => console.error(error))
-      .finally(() => setLoading(false));
-
-    fetch(
-      "https://api.themoviedb.org/3/tv/popular?api_key=763aad1b51ae4ed320afd3680c31c2fe&language=en-US&page=1"
-    )
-      .then((response) => response.json())
-      .then((json) => {
-        setTvShow(json.results);
-      })
-      .catch((error) => console.error(error));
-
-    fetch(
-      "https://api.themoviedb.org/3/movie/upcoming?api_key=763aad1b51ae4ed320afd3680c31c2fe&language=en-US&page=1"
-    )
-      .then((response) => response.json())
-      .then((json) => {
-        setUpComing(json.results);
-      })
-      .catch((error) => console.error(error));
-
-    //
-
-    fetch(
-      "https://api.themoviedb.org/3/movie/top_rated?api_key=763aad1b51ae4ed320afd3680c31c2fe&language=en-US&page=1"
-    )
-      .then((response) => response.json())
-      .then((json) => {
-        setTop(json.results);
-      })
-      .catch((error) => console.error(error));
+    dataFetch.map((el) => {
+      fetch(
+        `https://api.themoviedb.org/3/${el.type}?api_key=${api_key}&language=en-US&page=1`
+      )
+        .then((response) => response.json())
+        .then((json) => {
+          el.setItems(json.results);
+        })
+        .catch((error) => console.error(error));
+    });
+    setLoading(false);
   }, []);
 
-  const renderItem = ({ item }) => (
-    <HeroSlider {...item} navigation={navigation} />
-  );
-  console.log(tvShow);
+  const allTypeFormate = [
+    {
+      data: "data",
+      component: "HeroSlider",
+      route: "Preview",
+      special: true,
+      color1: "",
+      color2: "",
+      title: "Top picks for you",
+      icon: "right",
+    },
+  ];
+
   return (
     <ScrollView style={{ backgroundColor: "#111" }}>
       {isLoading ? (
-        <ActivityIndicator />
+        <ActivityIndicator style={{ height: 152 }} />
       ) : (
-        <FlatList
-          // data={[
-          //   {
-          //     adult: false,
-          //     backdrop_path: "/bQXAqRx2Fgc46uCVWgoPz5L5Dtr.jpg",
-          //     genre_ids: [28, 14, 12],
-          //     id: 436270,
-          //     original_language: "en",
-          //     original_title: "Black Adam",
-          //     overview:
-          //       "Nearly 5,000 years after he was bestowed with the almighty powers of the Egyptian gods—and imprisoned just as quickly—Black Adam is freed from his earthly tomb, ready to unleash his unique form of justice on the modern world.",
-          //     popularity: 5132.631,
-          //     poster_path: "/3zXceNTtyj5FLjwQXuPvLYK5YYL.jpg",
-          //     release_date: "2022-10-19",
-          //     title: "Black Adam",
-          //     video: false,
-          //     vote_average: 7.3,
-          //     vote_count: 285,
-          //   },
-          //   {
-          //     adult: false,
-          //     backdrop_path: "/aTovumsNlDjof7YVoU5nW2RHaYn.jpg",
-          //     genre_ids: [27, 53, 10749],
-          //     id: 616820,
-          //     original_language: "en",
-          //     original_title: "Halloween Ends",
-          //     overview:
-          //       "Four years after the events of Halloween in 2018, Laurie has decided to liberate herself from fear and rage and embrace life. But when a young man is accused of killing a boy he was babysitting, it ignites a cascade of violence and terror that will force Laurie to finally confront the evil she can’t control, once and for all.",
-          //     popularity: 4516.927,
-          //     poster_path: "/3uDwqxbr0j34rJVJMOW6o8Upw5W.jpg",
-          //     release_date: "2022-10-12",
-          //     title: "Halloween Ends",
-          //     video: false,
-          //     vote_average: 6.7,
-          //     vote_count: 557,
-          //   },
-          //   {
-          //     adult: false,
-          //     backdrop_path: "/tIX6j3NzadlwGcJ52nuWdmtOQkg.jpg",
-          //     genre_ids: [27, 53, 9648],
-          //     id: 717728,
-          //     original_language: "en",
-          //     original_title: "Jeepers Creepers: Reborn",
-          //     overview:
-          //       "Forced to travel with her boyfriend to a horror festival, Laine begins to experience disturbing visions associated with the urban legend of The Creeper. As the festival arrives and the blood-soaked entertainment builds to a frenzy, she becomes the center of it while something unearthly has been summoned.",
-          //     popularity: 4768.063,
-          //     poster_path: "/aGBuiirBIQ7o64FmJxO53eYDuro.jpg",
-          //     release_date: "2022-09-15",
-          //     title: "Jeepers Creepers: Reborn",
-          //     video: false,
-          //     vote_average: 5.8,
-          //     vote_count: 310,
-          //   },
-          //   {
-          //     adult: false,
-          //     backdrop_path: "/5GA3vV1aWWHTSDO5eno8V5zDo8r.jpg",
-          //     genre_ids: [27, 53],
-          //     id: 760161,
-          //     original_language: "en",
-          //     original_title: "Orphan: First Kill",
-          //     overview:
-          //       "After escaping from an Estonian psychiatric facility, Leena Klammer travels to America by impersonating Esther, the missing daughter of a wealthy family. But when her mask starts to slip, she is put against a mother who will protect her family from the murderous “child” at any cost.",
-          //     popularity: 3226.858,
-          //     poster_path: "/pHkKbIRoCe7zIFvqan9LFSaQAde.jpg",
-          //     release_date: "2022-07-27",
-          //     title: "Orphan: First Kill",
-          //     video: false,
-          //     vote_average: 6.8,
-          //     vote_count: 1079,
-          //   },
-          //   {
-          //     adult: false,
-          //     backdrop_path: "/etP5jwlwvkNhwe7jnI2AyA6ZKrR.jpg",
-          //     genre_ids: [878],
-          //     id: 575322,
-          //     original_language: "en",
-          //     original_title: "Звёздный разум",
-          //     overview:
-          //       "After depleting Earth's resources for centuries, humankind's survival requires an exodus to outer space. An international expedition is quickly formed to find a suitable new planet, but when plans go awry, the crew is suddenly stranded without power on a strange planet, where something unimaginable lies in wait.",
-          //     popularity: 2801.382,
-          //     poster_path: "/aVLV38txajXhEy2qNEClPIsDbAH.jpg",
-          //     release_date: "2022-01-06",
-          //     title: "Project Gemini",
-          //     video: false,
-          //     vote_average: 5.5,
-          //     vote_count: 122,
-          //   },
-          //   {
-          //     adult: false,
-          //     backdrop_path: "/1DBDwevWS8OhiT3wqqlW7KGPd6m.jpg",
-          //     genre_ids: [53],
-          //     id: 985939,
-          //     original_language: "en",
-          //     original_title: "Fall",
-          //     overview:
-          //       "For best friends Becky and Hunter, life is all about conquering fears and pushing limits. But after they climb 2,000 feet to the top of a remote, abandoned radio tower, they find themselves stranded with no way down. Now Becky and Hunter’s expert climbing skills will be put to the ultimate test as they desperately fight to survive the elements, a lack of supplies, and vertigo-inducing heights",
-          //     popularity: 2707.6,
-          //     poster_path: "/spCAxD99U1A6jsiePFoqdEcY0dG.jpg",
-          //     release_date: "2022-08-11",
-          //     title: "Fall",
-          //     video: false,
-          //     vote_average: 7.3,
-          //     vote_count: 1505,
-          //   },
-          //   {
-          //     adult: false,
-          //     backdrop_path: "/83oeqwN64WtafGoITvsOzjKIQaM.jpg",
-          //     genre_ids: [28, 35, 53],
-          //     id: 718930,
-          //     original_language: "en",
-          //     original_title: "Bullet Train",
-          //     overview:
-          //       "Unlucky assassin Ladybug is determined to do his job peacefully after one too many gigs gone off the rails. Fate, however, may have other plans, as Ladybug's latest mission puts him on a collision course with lethal adversaries from around the globe—all with connected, yet conflicting, objectives—on the world's fastest train.",
-          //     popularity: 2654.547,
-          //     poster_path: "/tVxDe01Zy3kZqaZRNiXFGDICdZk.jpg",
-          //     release_date: "2022-07-03",
-          //     title: "Bullet Train",
-          //     video: false,
-          //     vote_average: 7.5,
-          //     vote_count: 1920,
-          //   },
-          //   {
-          //     adult: false,
-          //     backdrop_path: "/iS9U3VHpPEjTWnwmW56CrBlpgLj.jpg",
-          //     genre_ids: [14, 35, 10751],
-          //     id: 642885,
-          //     original_language: "en",
-          //     original_title: "Hocus Pocus 2",
-          //     overview:
-          //       "It's been 29 years since someone lit the Black Flame Candle and resurrected the 17th-century sisters, and they are looking for revenge. Now it's up to three high-school students to stop the ravenous witches from wreaking a new kind of havoc on Salem before dawn on All Hallow's Eve.",
-          //     popularity: 2572.294,
-          //     poster_path: "/7ze7YNmUaX81ufctGqt0AgHxRtL.jpg",
-          //     release_date: "2022-09-27",
-          //     title: "Hocus Pocus 2",
-          //     video: false,
-          //     vote_average: 7.7,
-          //     vote_count: 824,
-          //   },
-          // ]}
-          showsHorizontalScrollIndicator={false}
-          horizontal={true}
-          data={data}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-        />
+        <View>
+          <FlatList
+            showsHorizontalScrollIndicator={false}
+            horizontal={true}
+            data={fda}
+            renderItem={({ item }) => <HeroSlider {...item} />}
+            keyExtractor={(item, index) => index}
+          />
+
+          <FlatList
+            showsHorizontalScrollIndicator={false}
+            horizontal={true}
+            data={allTypeFormate}
+            renderItem={({ item }) => <DataSplit {...item} />}
+            keyExtractor={(item, index) => index}
+          />
+        </View>
       )}
-      <TouchableWithoutFeedback
-        onPress={() => navigation.navigate("Preview", { data: "props" })}
-      >
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            paddingLeft: 20,
-            paddingRight: 20,
-            paddingTop: 10,
-          }}
-        >
-          <View>
-            <Text style={styles.text}>Top picks for you</Text>
-          </View>
-          <View>
-            <Icon name="right" color={"#fff"} size={20} />
-          </View>
-        </View>
-      </TouchableWithoutFeedback>
-      <FlatList
-        showsHorizontalScrollIndicator={false}
-        horizontal={true}
-        data={tvShow}
-        renderItem={({ item }) => (
-          <NormalImage {...item} navigation={navigation} />
-        )}
-        keyExtractor={(item) => item.id}
-      />
-
-      <TouchableWithoutFeedback
-        onPress={() => navigation.navigate("Preview", { data: "props" })}
-      >
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            paddingLeft: 20,
-            paddingRight: 20,
-            paddingTop: 10,
-          }}
-        >
-          <View>
-            <Text style={styles.text}>Popular films and shows</Text>
-          </View>
-          <View>
-            <Icon name="right" color={"#fff"} size={20} />
-          </View>
-        </View>
-      </TouchableWithoutFeedback>
-      <FlatList
-        showsHorizontalScrollIndicator={false}
-        horizontal={true}
-        data={upComing}
-        renderItem={({ item }) => (
-          <NormalImage {...item} navigation={navigation} />
-        )}
-        keyExtractor={(item) => item.id}
-      />
-
-      <LinearGradient colors={["red", "transparent"]}>
-        <View>
-          <TouchableWithoutFeedback
-            onPress={() => navigation.navigate("Preview", { data: "props" })}
-          >
-            <View
-              style={{
-                flex: 1,
-                flexDirection: "row",
-                justifyContent: "space-between",
-                paddingLeft: 20,
-                paddingRight: 20,
-                paddingTop: 10,
-              }}
-            >
-              <View>
-                <Text style={{ fontSize: 25, color: "#fff" }}>
-                  Lights, Diwali, Action!
-                </Text>
-                <Text style={{ fontSize: 17, color: "grey", width: 340 }}>
-                  This festive season light up your screens with these
-                  blockbusters
-                </Text>
-              </View>
-              <View>
-                <Icon name="right" color={"#fff"} size={20} />
-              </View>
-            </View>
-          </TouchableWithoutFeedback>
-          <FlatList
-            showsHorizontalScrollIndicator={false}
-            horizontal={true}
-            data={data}
-            renderItem={({ item }) => (
-              <SpecialImage {...item} navigation={navigation} />
-            )}
-            keyExtractor={(item) => item.id}
-          />
-        </View>
-      </LinearGradient>
-
-      <TouchableWithoutFeedback
-        onPress={() => navigation.navigate("Preview", { data: "props" })}
-      >
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            paddingLeft: 20,
-            paddingRight: 20,
-            paddingTop: 10,
-          }}
-        >
-          <View>
-            <Text style={styles.text}>Dramas</Text>
-          </View>
-          <View>
-            <Icon name="right" color={"#fff"} size={20} />
-          </View>
-        </View>
-      </TouchableWithoutFeedback>
-      <FlatList
-        showsHorizontalScrollIndicator={false}
-        horizontal={true}
-        data={top}
-        renderItem={({ item }) => (
-          <NormalImage {...item} navigation={navigation} />
-        )}
-        keyExtractor={(item) => item.id}
-      />
-
-      <TouchableWithoutFeedback
-        onPress={() => navigation.navigate("Preview", { data: "props" })}
-      >
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            paddingLeft: 20,
-            paddingRight: 20,
-            paddingTop: 10,
-          }}
-        >
-          <View>
-            <Text style={styles.text}>If you like criminal justice</Text>
-          </View>
-          <View>
-            <Icon name="right" color={"#fff"} size={20} />
-          </View>
-        </View>
-      </TouchableWithoutFeedback>
-      <FlatList
-        showsHorizontalScrollIndicator={false}
-        horizontal={true}
-        data={data}
-        renderItem={({ item }) => (
-          <NormalImage {...item} navigation={navigation} />
-        )}
-        keyExtractor={(item) => item.id}
-      />
-
-      <TouchableWithoutFeedback
-        onPress={() => navigation.navigate("Preview", { data: "props" })}
-      >
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            paddingLeft: 20,
-            paddingRight: 20,
-            paddingTop: 10,
-          }}
-        >
-          <View>
-            <Text style={styles.text}>Fantasy films</Text>
-          </View>
-          <View>
-            <Icon name="right" color={"#fff"} size={20} />
-          </View>
-        </View>
-      </TouchableWithoutFeedback>
-      <FlatList
-        showsHorizontalScrollIndicator={false}
-        horizontal={true}
-        data={data}
-        renderItem={({ item }) => (
-          <NormalImage {...item} navigation={navigation} />
-        )}
-        keyExtractor={(item) => item.id}
-      />
-
-      <TouchableWithoutFeedback
-        onPress={() => navigation.navigate("Preview", { data: "props" })}
-      >
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            paddingLeft: 20,
-            paddingRight: 20,
-            paddingTop: 10,
-          }}
-        >
-          <View>
-            <Text style={styles.text}>Trending</Text>
-          </View>
-          <View>
-            <Icon name="right" color={"#fff"} size={20} />
-          </View>
-        </View>
-      </TouchableWithoutFeedback>
-      <FlatList
-        showsHorizontalScrollIndicator={false}
-        horizontal={true}
-        data={data}
-        renderItem={({ item }) => (
-          <NormalImage {...item} navigation={navigation} />
-        )}
-        keyExtractor={(item) => item.id}
-      />
-
-      <TouchableWithoutFeedback
-        onPress={() => navigation.navigate("Preview", { data: "props" })}
-      >
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            paddingLeft: 20,
-            paddingRight: 20,
-            paddingTop: 10,
-          }}
-        >
-          <View>
-            <Text style={styles.text}>Comic capers</Text>
-          </View>
-          <View>
-            <Icon name="right" color={"#fff"} size={20} />
-          </View>
-        </View>
-      </TouchableWithoutFeedback>
-      <FlatList
-        showsHorizontalScrollIndicator={false}
-        horizontal={true}
-        data={data}
-        renderItem={({ item }) => (
-          <NormalImage {...item} navigation={navigation} />
-        )}
-        keyExtractor={(item) => item.id}
-      />
-
-      <TouchableWithoutFeedback
-        onPress={() => navigation.navigate("Preview", { data: "props" })}
-      >
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            paddingLeft: 20,
-            paddingRight: 20,
-            paddingTop: 10,
-          }}
-        >
-          <View>
-            <Text style={styles.text}>Action films</Text>
-          </View>
-          <View>
-            <Icon name="right" color={"#fff"} size={20} />
-          </View>
-        </View>
-      </TouchableWithoutFeedback>
-      <FlatList
-        showsHorizontalScrollIndicator={false}
-        horizontal={true}
-        data={data}
-        renderItem={({ item }) => (
-          <NormalImage {...item} navigation={navigation} />
-        )}
-        keyExtractor={(item) => item.id}
-      />
-
-      <TouchableWithoutFeedback
-        onPress={() => navigation.navigate("Preview", { data: "props" })}
-      >
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            paddingLeft: 20,
-            paddingRight: 20,
-            paddingTop: 10,
-          }}
-        >
-          <View>
-            <Text style={styles.text}>Sparking siblings</Text>
-          </View>
-          <View>
-            <Icon name="right" color={"#fff"} size={20} />
-          </View>
-        </View>
-      </TouchableWithoutFeedback>
-      <FlatList
-        showsHorizontalScrollIndicator={false}
-        horizontal={true}
-        data={data}
-        renderItem={({ item }) => (
-          <NormalImage {...item} navigation={navigation} />
-        )}
-        keyExtractor={(item) => item.id}
-      />
-
-      <TouchableWithoutFeedback
-        onPress={() => navigation.navigate("Preview", { data: "props" })}
-      >
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            paddingLeft: 20,
-            paddingRight: 20,
-            paddingTop: 10,
-          }}
-        >
-          <View>
-            <Text style={styles.text}>If you like MTV Hustle</Text>
-          </View>
-          <View>
-            <Icon name="right" color={"#fff"} size={20} />
-          </View>
-        </View>
-      </TouchableWithoutFeedback>
-      <FlatList
-        showsHorizontalScrollIndicator={false}
-        horizontal={true}
-        data={data}
-        renderItem={({ item }) => (
-          <NormalImage {...item} navigation={navigation} />
-        )}
-        keyExtractor={(item) => item.id}
-      />
-
-      <TouchableWithoutFeedback
-        onPress={() => navigation.navigate("Preview", { data: "props" })}
-      >
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            paddingLeft: 20,
-            paddingRight: 20,
-            paddingTop: 10,
-          }}
-        >
-          <View>
-            <Text style={styles.text}>Watch Before TV</Text>
-          </View>
-          <View>
-            <Icon name="right" color={"#fff"} size={20} />
-          </View>
-        </View>
-      </TouchableWithoutFeedback>
-      <FlatList
-        showsHorizontalScrollIndicator={false}
-        horizontal={true}
-        data={data}
-        renderItem={({ item }) => (
-          <NormalImage {...item} navigation={navigation} />
-        )}
-        keyExtractor={(item) => item.id}
-      />
-
-      <TouchableWithoutFeedback
-        onPress={() => navigation.navigate("Preview", { data: "props" })}
-      >
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            paddingLeft: 20,
-            paddingRight: 20,
-            paddingTop: 10,
-          }}
-        >
-          <View>
-            <Text style={styles.text}>Crime Shows</Text>
-          </View>
-          <View>
-            <Icon name="right" color={"#fff"} size={20} />
-          </View>
-        </View>
-      </TouchableWithoutFeedback>
-      <FlatList
-        showsHorizontalScrollIndicator={false}
-        horizontal={true}
-        data={data}
-        renderItem={({ item }) => (
-          <NormalImage {...item} navigation={navigation} />
-        )}
-        keyExtractor={(item) => item.id}
-      />
-
-      <TouchableWithoutFeedback
-        onPress={() => navigation.navigate("Preview", { data: "props" })}
-      >
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            paddingLeft: 20,
-            paddingRight: 20,
-            paddingTop: 10,
-          }}
-        >
-          <View>
-            <Text style={styles.text}>Adventure films</Text>
-          </View>
-          <View>
-            <Icon name="right" color={"#fff"} size={20} />
-          </View>
-        </View>
-      </TouchableWithoutFeedback>
-      <FlatList
-        showsHorizontalScrollIndicator={false}
-        horizontal={true}
-        data={data}
-        renderItem={({ item }) => (
-          <NormalImage {...item} navigation={navigation} />
-        )}
-        keyExtractor={(item) => item.id}
-      />
-
-      <TouchableWithoutFeedback
-        onPress={() => navigation.navigate("Preview", { data: "props" })}
-      >
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            paddingLeft: 20,
-            paddingRight: 20,
-            paddingTop: 10,
-          }}
-        >
-          <View>
-            <Text style={styles.text}>Magic films</Text>
-          </View>
-          <View>
-            <Icon name="right" color={"#fff"} size={20} />
-          </View>
-        </View>
-      </TouchableWithoutFeedback>
-      <FlatList
-        showsHorizontalScrollIndicator={false}
-        horizontal={true}
-        data={data}
-        renderItem={({ item }) => (
-          <NormalImage {...item} navigation={navigation} />
-        )}
-        keyExtractor={(item) => item.id}
-      />
-
-      <TouchableWithoutFeedback
-        onPress={() => navigation.navigate("Preview", { data: "props" })}
-      >
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            paddingLeft: 20,
-            paddingRight: 20,
-            paddingTop: 10,
-          }}
-        >
-          <View>
-            <Text style={styles.text}>Bollywood films</Text>
-          </View>
-          <View>
-            <Icon name="right" color={"#fff"} size={20} />
-          </View>
-        </View>
-      </TouchableWithoutFeedback>
-      <FlatList
-        showsHorizontalScrollIndicator={false}
-        horizontal={true}
-        data={data}
-        renderItem={({ item }) => (
-          <NormalImage {...item} navigation={navigation} />
-        )}
-        keyExtractor={(item) => item.id}
-      />
-
-      <TouchableWithoutFeedback
-        onPress={() => navigation.navigate("Preview", { data: "props" })}
-      >
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            paddingLeft: 20,
-            paddingRight: 20,
-            paddingTop: 10,
-          }}
-        >
-          <View>
-            <Text style={styles.text}>Popular films and shows</Text>
-          </View>
-          <View>
-            <Icon name="right" color={"#fff"} size={20} />
-          </View>
-        </View>
-      </TouchableWithoutFeedback>
-      <FlatList
-        showsHorizontalScrollIndicator={false}
-        horizontal={true}
-        data={data}
-        renderItem={({ item }) => (
-          <NormalImage {...item} navigation={navigation} />
-        )}
-        keyExtractor={(item) => item.id}
-      />
-
-      <LinearGradient colors={["blue", "transparent"]}>
-        <View>
-          <TouchableWithoutFeedback
-            onPress={() => navigation.navigate("Preview", { data: "props" })}
-          >
-            <View
-              style={{
-                flex: 1,
-                flexDirection: "row",
-                justifyContent: "space-between",
-                paddingLeft: 20,
-                paddingRight: 20,
-                paddingTop: 10,
-              }}
-            >
-              <View>
-                <Text style={styles.text}>Lights, Diwali, Action!</Text>
-                <Text style={{ fontSize: 17, color: "grey", width: 340 }}>
-                  This festive season light up your screens with these
-                  blockbusters
-                </Text>
-              </View>
-              <View>
-                <Icon name="right" color={"#fff"} size={20} />
-              </View>
-            </View>
-          </TouchableWithoutFeedback>
-          <FlatList
-            showsHorizontalScrollIndicator={false}
-            horizontal={true}
-            data={data}
-            renderItem={({ item }) => (
-              <SpecialImage {...item} navigation={navigation} />
-            )}
-            keyExtractor={(item) => item.id}
-          />
-        </View>
-      </LinearGradient>
     </ScrollView>
   );
 };
@@ -809,3 +149,54 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
 });
+
+const DataSplit = ({ special }) => {
+  return (
+    <View>
+      {special ? (
+        <LinearGradient colors={["red", "transparent"]}>
+          <View>
+            <TouchableWithoutFeedback
+              onPress={() => navigation.navigate("Preview", { data: "props" })}
+            >
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  paddingLeft: 20,
+                  paddingRight: 20,
+                  paddingTop: 10,
+                }}
+              >
+                <View>
+                  <Text style={{ fontSize: 25, color: "#fff" }}>
+                    Lights, Diwali, Action!
+                  </Text>
+                  <Text style={{ fontSize: 17, color: "grey", width: 340 }}>
+                    This festive season light up your screens with these
+                    blockbusters
+                  </Text>
+                </View>
+                <View>
+                  <Icon name="right" color={"#fff"} size={20} />
+                </View>
+              </View>
+            </TouchableWithoutFeedback>
+            {/* <FlatList
+              showsHorizontalScrollIndicator={false}
+              horizontal={true}
+              data={data}
+              renderItem={({ item }) => (
+                <SpecialImage {...item} navigation={navigation} />
+              )}
+              keyExtractor={(item) => item.id}
+            /> */}
+          </View>
+        </LinearGradient>
+      ) : (
+        <Text>gg</Text>
+      )}
+    </View>
+  );
+};
